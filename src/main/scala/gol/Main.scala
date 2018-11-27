@@ -1,6 +1,5 @@
 package gol
 
-import java.io._
 import io.Source.fromFile
 
 import GameOfLife.generation
