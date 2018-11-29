@@ -9,9 +9,13 @@ object GameOfLife {
 
     def nextLife(i: Int, j: Int) = {
       val alive = culture(i)(j)
-      val nAlive = (neigborStart(i) until neighborEnd(i, nRows)).foldLeft(0) { (acc, neighorRowI) =>
+      val neighborRowStart = neigborStart(i)
+      val neighborRowEnd = neighborEnd(i, nRows)
+      val neighborColStart = neigborStart(j)
+      val neighborColEnd = neighborEnd(j, nCols)
+      val nAlive = (neighborRowStart until neighborRowEnd).foldLeft(0) { (acc, neighorRowI) =>
         val row = culture(neighorRowI)
-        val neighborRow = row.slice(neigborStart(j), neighborEnd(j, nCols))
+        val neighborRow = row.slice(neighborColStart, neighborColEnd)
         val nAliveInNeighborRow = neighborRow.count(identity)
         acc + nAliveInNeighborRow
       }
