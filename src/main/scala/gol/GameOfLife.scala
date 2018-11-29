@@ -9,18 +9,22 @@ object GameOfLife {
 
     def nextGen(i: Int, j: Int) = {
       val alive = culture(i)(j)
-      val nNeighbors = (neigborStart(i) until neighborEnd(i, nRows)).foldLeft(0) { (acc, neighorRowI) =>
+      val nAlive = (neigborStart(i) until neighborEnd(i, nRows)).foldLeft(0) { (acc, neighorRowI) =>
         val nAliveInRow = culture(neighorRowI).slice(neigborStart(j), neighborEnd(j, nCols)).count(identity)
         acc + nAliveInRow
-      } - (if (alive) 1 else 0)
+      }
+
+      // don't count yourself
+      val nNeighbors = if (alive) nAlive - 1 else nAlive
+
       nextLife(nNeighbors, alive)
     }
 
     Vector.tabulate(nRows, nCols)(nextGen)
   }
-  
+
   private def neigborStart(k: Int) = max(0, k - 1)
-  
+
   private def neighborEnd(k: Int, n: Int) = min(n, k + 2)
 
   private def nextLife(nNeighbors: Int, alive: Boolean) =
